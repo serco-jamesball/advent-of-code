@@ -1,4 +1,3 @@
-from csv import DictReader
 from pandas import (
     DataFrame,
     Series,
@@ -7,7 +6,7 @@ from pathlib import Path
 
 import pandas
 
-input_file_path: Path = Path.cwd().joinpath('day-1', 'day_1_input.csv')
+input_file_path: Path = Path.cwd().joinpath('day-1', 'part-1', 'input.csv')
 
 unsorted: DataFrame = pandas.read_csv(input_file_path)
 
