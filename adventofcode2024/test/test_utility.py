@@ -12,7 +12,7 @@ def test_get_input_file_path() -> None:
 
 
 @pytest.mark.parametrize(
-    "file_name, expected",
+    "file_path, expected",
     [
         (
             Path(r"adventofcode2024\day1\part1\solution.py"),
@@ -30,9 +30,14 @@ def test_get_input_file_path() -> None:
         ),
     ],
 )
-def test_parse_file_name(file_name: Path, expected: tuple[str, str]) -> None:
-    assert utility.parse_file_name(file_name) == expected
+def test_parse_file_path(file_path: Path, expected: tuple[str, str]) -> None:
+    assert utility.parse_file_path(file_path) == expected
 
 
 def test_get_answer_message() -> None:
-    assert utility.get_answer_message("1", "1", "123") == "day 1: part 1: answer: 123"
+    assert (
+        utility.get_answer_message(
+            Path(r"adventofcode2024\day1\part1\solution.py"), "123"
+        )
+        == "day 1: part 1: answer: 123"
+    )

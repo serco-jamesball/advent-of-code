@@ -14,9 +14,9 @@ def get_input_file_path(file_path: Path) -> Path:
     return file_path.parent.joinpath(INPUT_FILE_NAME)
 
 
-def parse_file_name(file_name: Path) -> tuple[str, str]:
-    day: str = re.match(FOLDER_NAME_PATTERN, file_name.parent.parent.stem).group(1)
-    part: str = re.match(FOLDER_NAME_PATTERN, file_name.parent.stem).group(1)
+def parse_file_path(file_path: Path) -> tuple[str, str]:
+    day: str = re.match(FOLDER_NAME_PATTERN, file_path.parent.parent.stem).group(1)
+    part: str = re.match(FOLDER_NAME_PATTERN, file_path.parent.stem).group(1)
 
     return (
         day,
@@ -24,5 +24,7 @@ def parse_file_name(file_name: Path) -> tuple[str, str]:
     )
 
 
-def get_answer_message(day: str, part: str, answer: int) -> str:
+def get_answer_message(file_path: Path, answer: int) -> str:
+    day, part = parse_file_path(file_path)
+
     return ANSWER_MESSAGE.format(day=day, part=part, answer=str(answer))
