@@ -1,4 +1,6 @@
+import pandas
 import re
+from pandas import DataFrame
 from pathlib import Path
 from re import Pattern
 
@@ -28,3 +30,13 @@ def get_answer_message(file_path: Path, answer: int) -> str:
     day, part = parse_file_path(file_path)
 
     return ANSWER_MESSAGE.format(day=day, part=part, answer=str(answer))
+
+
+def get_column_labels(file_path: Path) -> int:
+    return list(
+        range(max(open(file_path), key=lambda line: line.count(",")).count(",") + 1)
+    )
+
+
+def get_dataframe(file_path: Path) -> DataFrame:
+    return pandas.read_csv(file_path, names=get_column_labels(file_path))

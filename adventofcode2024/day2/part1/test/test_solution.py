@@ -1,4 +1,4 @@
-import day1.part1.solution as solution
+import day2.part1.solution as solution
 import utility
 from pandas import DataFrame
 from pathlib import Path
@@ -11,4 +11,4 @@ def test_solve() -> None:
 
     input: DataFrame = utility.get_dataframe(input_file_path)
 
-    assert solution.solve(input) == 11
+    assert solution.solve(input) == 2

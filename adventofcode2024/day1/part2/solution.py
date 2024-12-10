@@ -1,13 +1,12 @@
-import pandas
 import utility
 from pandas import DataFrame
 from pathlib import Path
 
 
 def solve(input: DataFrame) -> int:
-    input["occurrences"] = [len(input[input["y"] == x]) for x in input["x"]]
+    input["occurrences"] = [len(input[input[1] == value]) for value in input[0]]
 
-    input["similarity"] = input["occurrences"] * input["x"]
+    input["similarity"] = input["occurrences"] * input[0]
 
     similarity_score: int = input["similarity"].sum()
 
@@ -18,7 +17,8 @@ def main() -> None:
     file_path: Path = Path(__file__)
 
     input_file_path: Path = utility.get_input_file_path(file_path)
-    input: DataFrame = pandas.read_csv(input_file_path)
+
+    input: DataFrame = utility.get_dataframe(input_file_path)
 
     answer: int = solve(input)
 

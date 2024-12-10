@@ -1,13 +1,14 @@
 import day1.part2.solution as solution
-import pandas
+import utility
 from pandas import DataFrame
 from pathlib import Path
 
 
-INPUT_FILE_PATH: Path = Path(__file__).parent.joinpath("input.csv")
-
-
 def test_solve() -> None:
-    input: DataFrame = pandas.read_csv(INPUT_FILE_PATH)
+    file_path: Path = Path(__file__)
+
+    input_file_path: Path = utility.get_input_file_path(file_path)
+
+    input: DataFrame = utility.get_dataframe(input_file_path)
 
     assert solution.solve(input) == 31
