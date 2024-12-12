@@ -36,7 +36,7 @@ def get_part_2_answer(input: DataFrame) -> int:
 
 
 def main() -> None:
-    input: DataFrame = utility.get_input(__file__)
+    input: DataFrame = utility.get_input(utility.get_input_file_path(__file__))
 
     part_1_answer: int = get_part_1_answer(input)
     part_2_answer: int = get_part_2_answer(input)

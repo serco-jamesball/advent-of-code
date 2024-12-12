@@ -10,11 +10,11 @@ from pathlib import Path
     [
         (
             r"year2024\day01\solution.py",
-            Path(fr"year2024\day01\resource\{utility.INPUT_FILE_NAME}"),
+            Path(rf"year2024\day01\resource\{utility.INPUT_FILE_NAME}"),
         ),
         (
             r"year2024\day01\test\test_solution.py",
-            Path(fr"year2024\day01\test\resource\{utility.INPUT_FILE_NAME}"),
+            Path(rf"year2024\day01\test\resource\{utility.INPUT_FILE_NAME}"),
         ),
     ],
 )
@@ -22,22 +22,35 @@ def test_get_input_file_path(file_path: str, expected: Path) -> None:
     assert utility.get_input_file_path(file_path) == expected
 
 
-def test_get_column_labels() -> None:
-    file_path: Path = Path(fr"year2024\test\resource\{utility.INPUT_FILE_NAME}")
-
-    assert utility.get_column_labels(file_path) == [0, 1, 2]
+@pytest.mark.parametrize(
+    "file_path, expected",
+    [
+        (
+            Path(r"year2024\test\resource\test_get_column_labels_fixed.csv"),
+            [0, 1, 2],
+        ),
+        (
+            Path(r"year2024\test\resource\test_get_column_labels_variable.csv"),
+            [0, 1, 2],
+        ),
+    ],
+)
+def test_get_column_labels(file_path: Path, expected: list[int]) -> None:
+    assert utility.get_column_labels(file_path) == expected
 
 
 def test_get_input() -> None:
+    file_path: Path = Path(rf"year2024\test\resource\test_get_input.csv")
+
     expected: DataFrame = DataFrame(
         [
-            [1, numpy.nan, numpy.nan],
-            [2, 3.0, numpy.nan],
-            [4, 5.0, 6.0],
-        ]
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+        ],
     )
 
-    assert utility.get_input(__file__).equals(expected)
+    assert utility.get_input(file_path).equals(expected)
 
 
 @pytest.mark.parametrize(
@@ -51,10 +64,7 @@ def test_get_input() -> None:
         (
             1,
             {"part_1": 1, "part_2": 2},
-            (
-                "day 1: part 1: answer: 1\n"
-                "day 1: part 2: answer: 2"
-            ),
+            ("day 1: part 1: answer: 1\n" "day 1: part 2: answer: 2"),
         ),
     ],
 )
