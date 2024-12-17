@@ -1,14 +1,21 @@
+import pandas
 import year2024.day01.solution as solution
 import year2024.utility as utility
 from pandas import DataFrame
 
 
-TEST_INPUT: DataFrame = utility.get_input(utility.get_input_file_path(__file__))
+pandas.options.mode.copy_on_write = True
 
 
-def test_get_part_1_answer() -> None:
-    assert solution.get_part_1_answer(TEST_INPUT) == 11
+LOCATION_LISTS_FILE_PATH: str = r"year2024\day01\test\resource\input.csv"
+LOCATION_LISTS: DataFrame = pandas.read_csv(
+    LOCATION_LISTS_FILE_PATH, names=utility.get_column_labels(LOCATION_LISTS_FILE_PATH)
+)
 
 
-def test_get_part_2_answer() -> None:
-    assert solution.get_part_2_answer(TEST_INPUT) == 31
+def test_find_total_distance_between_lists() -> None:
+    assert solution.find_total_distance_between_lists(LOCATION_LISTS) == 11
+
+
+def test_find_similarity_score() -> None:
+    assert solution.find_similarity_score(LOCATION_LISTS) == 31

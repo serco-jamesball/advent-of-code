@@ -1,25 +1,7 @@
-import numpy
 import pytest
 import year2024.utility as utility
 from pandas import DataFrame
 from pathlib import Path
-
-
-@pytest.mark.parametrize(
-    "file_path, expected",
-    [
-        (
-            r"year2024\day01\solution.py",
-            Path(rf"year2024\day01\resource\{utility.INPUT_FILE_NAME}"),
-        ),
-        (
-            r"year2024\day01\test\test_solution.py",
-            Path(rf"year2024\day01\test\resource\{utility.INPUT_FILE_NAME}"),
-        ),
-    ],
-)
-def test_get_input_file_path(file_path: str, expected: Path) -> None:
-    assert utility.get_input_file_path(file_path) == expected
 
 
 @pytest.mark.parametrize(
@@ -37,20 +19,6 @@ def test_get_input_file_path(file_path: str, expected: Path) -> None:
 )
 def test_get_column_labels(file_path: Path, expected: list[int]) -> None:
     assert utility.get_column_labels(file_path) == expected
-
-
-def test_get_input() -> None:
-    file_path: Path = Path(rf"year2024\test\resource\test_get_input.csv")
-
-    expected: DataFrame = DataFrame(
-        [
-            [1, 2, 3],
-            [4, 5, 6],
-            [7, 8, 9],
-        ],
-    )
-
-    assert utility.get_input(file_path).equals(expected)
 
 
 @pytest.mark.parametrize(

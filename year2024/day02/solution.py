@@ -1,4 +1,3 @@
-import year2024.constant as constant
 import numpy
 import pandas
 import year2024.utility as utility
@@ -9,6 +8,8 @@ pandas.options.mode.copy_on_write = True
 
 
 DAY: str = "2"
+
+REPORTS_FILE_PATH: str = r"year2024\day02\resource\input.csv"
 
 NULL_VALUE: int = -1
 
@@ -117,7 +118,9 @@ def evaluate_reports(
     return reports
 
 
-def get_answer(input: DataFrame, is_problem_dampener_mounted: bool = False) -> int:
+def find_total_safe_reports(
+    input: DataFrame, is_problem_dampener_mounted: bool = False
+) -> int:
     evaluated_reports: DataFrame = evaluate_reports(input, is_problem_dampener_mounted)
 
     total_safe_reports: int = evaluated_reports["is_safe"].sum()
@@ -126,10 +129,14 @@ def get_answer(input: DataFrame, is_problem_dampener_mounted: bool = False) -> i
 
 
 def main() -> None:
-    input: DataFrame = utility.get_input(utility.get_input_file_path(__file__))
+    reports: DataFrame = pandas.read_csv(
+        REPORTS_FILE_PATH, names=utility.get_column_labels(REPORTS_FILE_PATH)
+    )
 
-    part_1_answer: int = get_answer(input)
-    part_2_answer: int = get_answer(input, is_problem_dampener_mounted=True)
+    part_1_answer: int = find_total_safe_reports(reports)
+    part_2_answer: int = find_total_safe_reports(
+        reports, is_problem_dampener_mounted=True
+    )
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
 
