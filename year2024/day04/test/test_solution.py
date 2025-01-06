@@ -59,57 +59,21 @@ def test_find_occurrences_of_letter() -> None:
     "coordinates, grid, expected",
     [
         # Positive cases
-        (
-            (0, 0),
-            ["XXX", "XXX", "XXX"],
-            [(0, 1), (1, 0), (1, 1)]
-        ),
-        (
-            (0, 1),
-            ["XXX", "XXX", "XXX"],
-            [(0, 0), (0, 2), (1, 0), (1, 1), (1, 2)]
-        ),
-        (
-            (0, 2),
-            ["XXX", "XXX", "XXX"],
-            [(0, 1), (1, 1), (1, 2)]
-        ),
-        (
-            (1, 0),
-            ["XXX", "XXX", "XXX"],
-            [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1)]
-        ),
+        ((0, 0), ["XXX", "XXX", "XXX"], [(0, 1), (1, 0), (1, 1)]),
+        ((0, 1), ["XXX", "XXX", "XXX"], [(0, 0), (0, 2), (1, 0), (1, 1), (1, 2)]),
+        ((0, 2), ["XXX", "XXX", "XXX"], [(0, 1), (1, 1), (1, 2)]),
+        ((1, 0), ["XXX", "XXX", "XXX"], [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1)]),
         (
             (1, 1),
             ["XXX", "XXX", "XXX"],
-            [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)]
+            [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)],
         ),
-        (
-            (1, 2),
-            ["XXX", "XXX", "XXX"],
-            [(0, 1), (0, 2), (1, 1), (2, 1), (2, 2)]
-        ),
-        (
-            (2, 0),
-            ["XXX", "XXX", "XXX"],
-            [(1, 0), (1, 1), (2, 1)]
-        ),
-        (
-            (2, 1),
-            ["XXX", "XXX", "XXX"],
-            [(1, 0), (1, 1), (1, 2), (2, 0), (2, 2)]
-        ),
-        (
-            (2, 2),
-            ["XXX", "XXX", "XXX"],
-            [(1, 1), (1, 2), (2, 1)]
-        ),
+        ((1, 2), ["XXX", "XXX", "XXX"], [(0, 1), (0, 2), (1, 1), (2, 1), (2, 2)]),
+        ((2, 0), ["XXX", "XXX", "XXX"], [(1, 0), (1, 1), (2, 1)]),
+        ((2, 1), ["XXX", "XXX", "XXX"], [(1, 0), (1, 1), (1, 2), (2, 0), (2, 2)]),
+        ((2, 2), ["XXX", "XXX", "XXX"], [(1, 1), (1, 2), (2, 1)]),
         # Negative cases
-        (
-            (1, 1),
-            ["OOX", "OXX", "XXX"],
-            [(0, 2), (1, 2), (2, 0), (2, 1), (2, 2)]
-        )
+        ((1, 1), ["OOX", "OXX", "XXX"], [(0, 2), (1, 2), (2, 0), (2, 1), (2, 2)]),
     ],
 )
 def test_find_occurrences_of_letter_along_vector(
@@ -117,11 +81,13 @@ def test_find_occurrences_of_letter_along_vector(
 ) -> None:
     letter: str = "X"
     actual: list[Coordinates] = []
-    
+
     for vector in solution.VECTORS:
-        if result := solution.find_occurrences_of_letter_along_vector(coordinates, letter, grid, vector):
+        if result := solution.find_occurrences_of_letter_along_vector(
+            coordinates, letter, grid, vector
+        ):
             actual.append(result)
-    
+
     assert sorted(actual) == sorted(expected)
 
 
