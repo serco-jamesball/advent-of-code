@@ -56,130 +56,72 @@ def test_find_occurrences_of_letter() -> None:
 
 
 @pytest.mark.parametrize(
-    "coordinates, letter, grid, expected",
+    "coordinates, grid, expected",
     [
-        # All letters are "X":
-        #   0 1 2
-        # 0 X X X
-        # 1 X X X
-        # 2 X X X
-        # Top left:
-        # X →
-        # ↓ ↘
-        ((0, 0), "X", ["XXX", "XXX", "XXX"], [(0, 1), (1, 1), (1, 0)]),
-        # Middle left:
-        # ↑ ↗
-        # X →
-        # ↓ ↘
-        ((1, 0), "X", ["XXX", "XXX", "XXX"], [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1)]),
-        # Bottom left:
-        # ↑ ↗
-        # X →
-        ((2, 0), "X", ["XXX", "XXX", "XXX"], [(1, 0), (1, 1), (2, 1)]),
-        # Top middle:
-        # ← X →
-        # ↙ ↓ ↘
-        ((0, 1), "X", ["XXX", "XXX", "XXX"], [(0, 0), (1, 0), (0, 2), (1, 2), (1, 1)]),
-        # Middle:
-        # ↖ ↑ ↗
-        # ← X →
-        # ↙ ↓ ↘
+        # Positive cases
+        (
+            (0, 0),
+            ["XXX", "XXX", "XXX"],
+            [(0, 1), (1, 0), (1, 1)]
+        ),
+        (
+            (0, 1),
+            ["XXX", "XXX", "XXX"],
+            [(0, 0), (0, 2), (1, 0), (1, 1), (1, 2)]
+        ),
+        (
+            (0, 2),
+            ["XXX", "XXX", "XXX"],
+            [(0, 1), (1, 1), (1, 2)]
+        ),
+        (
+            (1, 0),
+            ["XXX", "XXX", "XXX"],
+            [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1)]
+        ),
         (
             (1, 1),
-            "X",
             ["XXX", "XXX", "XXX"],
-            [(0, 1), (2, 1), (0, 0), (1, 0), (2, 0), (0, 2), (1, 2), (2, 2)],
+            [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 0), (2, 1), (2, 2)]
         ),
-        # Bottom middle:
-        # ↖ ↑ ↗
-        # ← X →
-        (
-            (2, 1),
-            "X",
-            ["XXX", "XXX", "XXX"],
-            [(1, 1), (1, 0), (2, 0), (1, 2), (2, 2)],
-        ),
-        # Top right:
-        # ← X
-        # ↙ ↓
-        ((0, 2), "X", ["XXX", "XXX", "XXX"], [(0, 1), (1, 1), (1, 2)]),
-        # Middle right:
-        # ↖ ↑
-        # ← X
-        # ↙ ↓
         (
             (1, 2),
-            "X",
             ["XXX", "XXX", "XXX"],
-            [(0, 2), (2, 2), (0, 1), (1, 1), (2, 1)],
+            [(0, 1), (0, 2), (1, 1), (2, 1), (2, 2)]
         ),
-        # Bottom right:
-        # ↖ ↑
-        # ← X
-        ((2, 2), "X", ["XXX", "XXX", "XXX"], [(1, 2), (1, 1), (2, 1)]),
-        # Letters are "X" or "O":
-        #   0 1 2
-        # 0 X O X
-        # 1 O X O
-        # 2 X O X
-        # Top left:
-        # X
-        #   ↘
-        ((0, 0), "X", ["XOX", "OXO", "XOX"], [(1, 1)]),
-        # Middle left:
-        # ↑
-        # X →
-        # ↓
-        ((1, 0), "X", ["XOX", "OXO", "XOX"], [(0, 0), (1, 1), (2, 0)]),
-        # Bottom left:
-        #   ↗
-        # X
-        ((2, 0), "X", ["XOX", "OXO", "XOX"], [(1, 1)]),
-        # Top middle:
-        # ← X →
-        #   ↓
-        ((0, 1), "X", ["XOX", "OXO", "XOX"], [(0, 0), (0, 2), (1, 1)]),
-        # Middle:
-        # ↖   ↗
-        #   X
-        # ↙   ↘
-        ((1, 1), "X", ["XOX", "OXO", "XOX"], [(0, 0), (0, 2), (2, 0), (2, 2)]),
-        # Bottom middle:
-        #   ↑
-        # ← X →
+        (
+            (2, 0),
+            ["XXX", "XXX", "XXX"],
+            [(1, 0), (1, 1), (2, 1)]
+        ),
         (
             (2, 1),
-            "X",
-            ["XOX", "OXO", "XOX"],
-            [(1, 1), (2, 0), (2, 2)],
+            ["XXX", "XXX", "XXX"],
+            [(1, 0), (1, 1), (1, 2), (2, 0), (2, 2)]
         ),
-        # Top right:
-        #   X
-        # ↙
-        ((0, 2), "X", ["XOX", "OXO", "XOX"], [(1, 1)]),
-        # Middle right:
-        #   ↑
-        # ← X
-        #   ↓
         (
-            (1, 2),
-            "X",
-            ["XOX", "OXO", "XOX"],
-            [(0, 2), (1, 1), (2, 2)],
+            (2, 2),
+            ["XXX", "XXX", "XXX"],
+            [(1, 1), (1, 2), (2, 1)]
         ),
-        # Bottom right:
-        # ↖
-        #   X
-        ((2, 2), "X", ["XOX", "OXO", "XOX"], [(1, 1)]),
+        # Negative cases
+        (
+            (1, 1),
+            ["OOX", "OXX", "XXX"],
+            [(0, 2), (1, 2), (2, 0), (2, 1), (2, 2)]
+        )
     ],
 )
 def test_find_occurrences_of_letter_along_vector(
-    coordinates: Coordinates, letter: str, grid: Grid, expected: list[Coordinates]
+    coordinates: Coordinates, grid: Grid, expected: list[Coordinates]
 ) -> None:
-    actual: list[Coordinates] = solution.find_occurrences_of_letter_along_vector(
-        coordinates, letter, grid
-    )
-
+    letter: str = "X"
+    actual: list[Coordinates] = []
+    
+    for vector in solution.VECTORS:
+        if result := solution.find_occurrences_of_letter_along_vector(coordinates, letter, grid, vector):
+            actual.append(result)
+    
     assert sorted(actual) == sorted(expected)
 
 

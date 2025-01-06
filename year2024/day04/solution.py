@@ -65,14 +65,13 @@ def find_occurrence_of_word_along_vector(
     if not word:
         return match
 
-    if occurrences := find_occurrences_of_letter_along_vector(
+    if occurrence := find_occurrences_of_letter_along_vector(
         coordinates, word[0], grid, vector
     ):
-        for occurrence in occurrences:
-            match.append((occurrence, word[0]))
-            return find_occurrence_of_word_along_vector(
-                occurrence, word[1:], grid, vector, match
-            )
+        match.append((occurrence, word[0]))
+        return find_occurrence_of_word_along_vector(
+            occurrence, word[1:], grid, vector, match
+        )
 
     return None
 
@@ -88,13 +87,11 @@ def find_occurrences_of_letter(letter: str, grid: Grid) -> list[Coordinates]:
 
 def find_occurrences_of_letter_along_vector(
     coordinates: Coordinates, letter: str, grid: Grid, vector: Vector
-) -> list[Coordinates]:
+) -> Coordinates | None:
     row, col = coordinates
     row_offset, col_offset = vector
 
     row_tally, col_tally = len(grid), len(grid[0])
-
-    surrounding_coordinates: list[Coordinates] = []
 
     next_row, next_col = row + row_offset, col + col_offset
     if (
@@ -104,9 +101,7 @@ def find_occurrences_of_letter_along_vector(
         and next_col < col_tally
         and grid[next_row][next_col] == letter
     ):
-        surrounding_coordinates.append((next_row, next_col))
-
-    return surrounding_coordinates
+        return next_row, next_col
 
 
 if __name__ == "__main__":
