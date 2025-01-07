@@ -1,6 +1,6 @@
 import pytest
 import year2024.day04.solution as solution
-from year2024.day04.solution import Coordinates, Grid, Match, Vector, WORD
+from year2024.day04.solution import Coordinates, Grid, Match, Offset
 
 
 WORD_SEARCH_FILE_PATH: str = r"year2024\day04\test\resource\input.txt"
@@ -76,15 +76,15 @@ def test_find_occurrences_of_letter() -> None:
         ((1, 1), ["OOX", "OXX", "XXX"], [(0, 2), (1, 2), (2, 0), (2, 1), (2, 2)]),
     ],
 )
-def test_find_occurrences_of_letter_along_vector(
+def test_find_occurrence_of_letter_along_vector(
     coordinates: Coordinates, grid: Grid, expected: list[Coordinates]
 ) -> None:
     letter: str = "X"
     actual: list[Coordinates] = []
 
-    for vector in solution.VECTORS:
-        if result := solution.find_occurrences_of_letter_along_vector(
-            coordinates, letter, grid, vector
+    for offset, _ in solution.VECTORS:
+        if result := solution.find_occurrence_of_letter_along_vector(
+            coordinates, letter, grid, offset
         ):
             actual.append(result)
 
@@ -92,7 +92,7 @@ def test_find_occurrences_of_letter_along_vector(
 
 
 @pytest.mark.parametrize(
-    "coordinates, vector, expected",
+    "coordinates, offset, expected",
     # Expected results:
     #   0123456789
     # 0 ....XXMAS.
@@ -129,17 +129,28 @@ def test_find_occurrences_of_letter_along_vector(
     ],
 )
 def test_find_occurrence_of_word_along_vector(
-    coordinates: Coordinates, vector: Vector, expected: Match
+    coordinates: Coordinates, offset: Offset, expected: Match
 ) -> None:
     assert (
         solution.find_occurrence_of_word_along_vector(
-            coordinates, solution.WORD, WORD_SEARCH_GRID, vector
+            coordinates, "XMAS", WORD_SEARCH_GRID, offset
         )
         == expected
     )
 
 
-def test_find_occurrences_of_word() -> None:
+def test_find_occurrences_of_xmas() -> None:
+    #   0123456789
+    # 0 ....XXMAS.
+    # 1 .SAMXMS...
+    # 2 ...S..A...
+    # 3 ..A.A.MS.X
+    # 4 XMASAMX.MM
+    # 5 X.....XA.A
+    # 6 S.S.S.S.SS
+    # 7 .A.A.A.A.A
+    # 8 ..M.M.M.MM
+    # 9 .X.X.XMASX
     expected: list[Match] = [
         [((0, 4), "X"), ((1, 5), "M"), ((2, 6), "A"), ((3, 7), "S")],
         [((0, 5), "X"), ((0, 6), "M"), ((0, 7), "A"), ((0, 8), "S")],
@@ -161,8 +172,35 @@ def test_find_occurrences_of_word() -> None:
         [((9, 9), "X"), ((8, 9), "M"), ((7, 9), "A"), ((6, 9), "S")],
     ]
 
-    actual: list[Match] = solution.find_occurrences_of_word(
-        solution.WORD, WORD_SEARCH_GRID
-    )
+    actual: list[Match] = solution.find_occurrences_of_xmas(WORD_SEARCH_GRID)
+
+    assert sorted(actual) == sorted(expected)
+
+
+def test_find_occurrences_of_x_mas() -> None:
+    #   0123456789
+    # 0 .M.S......
+    # 1 ..A..MSMS.
+    # 2 .M.S.MAA..
+    # 3 ..A.ASMSM.
+    # 4 .M.S.M....
+    # 5 ..........
+    # 6 S.S.S.S.S.
+    # 7 .A.A.A.A..
+    # 8 M.M.M.M.M.
+    # 9 ..........
+    expected: list[Match] = [
+        [((0, 1), "M"), ((0, 3), "S"), ((1, 2), "A"), ((2, 1), "M"), ((2, 3), "S")],
+        [((1, 5), "M"), ((1, 7), "M"), ((2, 6), "A"), ((3, 5), "S"), ((3, 7), "S")],
+        [((1, 6), "S"), ((1, 8), "S"), ((2, 7), "A"), ((3, 6), "M"), ((3, 8), "M")],
+        [((2, 1), "M"), ((2, 3), "S"), ((3, 2), "A"), ((4, 1), "M"), ((4, 3), "S")],
+        [((2, 3), "S"), ((2, 5), "M"), ((3, 4), "A"), ((4, 3), "S"), ((4, 5), "M")],
+        [((6, 0), "S"), ((6, 2), "S"), ((7, 1), "A"), ((8, 0), "M"), ((8, 2), "M")],
+        [((6, 2), "S"), ((6, 4), "S"), ((7, 3), "A"), ((8, 2), "M"), ((8, 4), "M")],
+        [((6, 4), "S"), ((6, 6), "S"), ((7, 5), "A"), ((8, 4), "M"), ((8, 6), "M")],
+        [((6, 6), "S"), ((6, 8), "S"), ((7, 7), "A"), ((8, 6), "M"), ((8, 8), "M")],
+    ]
+
+    actual: list[Match] = solution.find_occurrences_of_x_mas(WORD_SEARCH_GRID)
 
     assert sorted(actual) == sorted(expected)
