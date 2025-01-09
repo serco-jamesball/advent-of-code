@@ -3,10 +3,10 @@ import pytest
 import year2024.day05.solution as solution
 
 
+UPDATES_FILE_PATH: str = r"year2024\day05\test\resource\updates.txt"
 PAGE_ORDERING_RULES_FILE_PATH: str = (
     r"year2024\day05\test\resource\page_ordering_rules.txt"
 )
-UPDATES_FILE_PATH: str = r"year2024\day05\test\resource\updates.txt"
 
 PAGE_ORDERING_RULES: defaultdict[int, set[int]] = defaultdict(set)
 PAGE_ORDERING_RULES[13] = {97, 75, 47, 61, 53, 29}
@@ -25,13 +25,20 @@ UPDATES: list[list[int]] = [
     [97, 13, 75, 29, 47],
 ]
 
-UPDATES_IN_RIGHT_ORDER: list[list[int]] = [
+CORRECTLY_ORDERED_UPDATES: list[list[int]] = [
     [75, 47, 61, 53, 29],
     [97, 61, 53, 29, 13],
     [75, 29, 13],
 ]
 
+CORRECTED_UPDATES: list[list[int]] = [
+    [97, 75, 47, 61, 53],
+    [61, 29, 13],
+    [97, 75, 47, 29, 13],
+]
+
 PART_1_ANSWER: int = 143
+PART_2_ANSWER: int = 123
 
 
 def test_get_page_ordering_rules() -> None:
@@ -56,26 +63,16 @@ def test_get_updates() -> None:
         ([97, 13, 75, 29, 47], False),
     ],
 )
-def test_is_update_page_order_correct(update: list[int], expected: bool) -> None:
-    assert (
-        solution.is_update_page_order_correct(update, PAGE_ORDERING_RULES) == expected
-    )
+def test_is_ordered_correctly(update: list[int], expected: bool) -> None:
+    assert solution.is_ordered_correctly(update, PAGE_ORDERING_RULES) == expected
 
 
-def test_get_updates_with_correct_page_order() -> None:
-    assert sorted(
-        solution.get_updates_with_correct_page_order(UPDATES, PAGE_ORDERING_RULES)
-    ) == sorted(UPDATES_IN_RIGHT_ORDER)
-
-
-def test_sum_middle_numbers() -> None:
-    assert solution.sum_middle_numbers(UPDATES_IN_RIGHT_ORDER) == PART_1_ANSWER
-
-
-def test_get_part_1_answer() -> None:
-    page_ordering_rules: dict[int, set[int]] = solution.get_page_ordering_rules(
-        PAGE_ORDERING_RULES_FILE_PATH
-    )
-    updates: list[int] = solution.get_updates(UPDATES_FILE_PATH)
-
-    assert solution.get_part_1_answer(page_ordering_rules, updates) == PART_1_ANSWER
+@pytest.mark.parametrize(
+    "updates, expected",
+    [
+        (CORRECTLY_ORDERED_UPDATES, PART_1_ANSWER),
+        (CORRECTED_UPDATES, PART_2_ANSWER),
+    ],
+)
+def test_sum_middle_pages(updates: list[list[int]], expected: int) -> None:
+    assert solution.sum_middle_pages(updates) == expected
