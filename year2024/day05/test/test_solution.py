@@ -31,6 +31,12 @@ CORRECTLY_ORDERED_UPDATES: list[list[int]] = [
     [75, 29, 13],
 ]
 
+INCORRECTLY_ORDERED_UPDATES: list[list[int]] = [
+    [75, 97, 47, 61, 53],
+    [61, 13, 29],
+    [97, 13, 75, 29, 47],
+]
+
 CORRECTED_UPDATES: list[list[int]] = [
     [97, 75, 47, 61, 53],
     [61, 29, 13],
@@ -65,6 +71,17 @@ def test_get_updates() -> None:
 )
 def test_is_ordered_correctly(update: list[int], expected: bool) -> None:
     assert solution.is_ordered_correctly(update, PAGE_ORDERING_RULES) == expected
+
+
+@pytest.mark.parametrize(
+    "update, expected",
+    [
+        (update, CORRECTED_UPDATES[i])
+        for i, update in enumerate(INCORRECTLY_ORDERED_UPDATES)
+    ],
+)
+def test_correct_order(update: list[int], expected: list[int]) -> None:
+    assert solution.correct_order(update, PAGE_ORDERING_RULES) == expected
 
 
 @pytest.mark.parametrize(

@@ -31,13 +31,25 @@ def is_ordered_correctly(
     update: list[int], page_ordering_rules: dict[int, set[int]]
 ) -> bool:
     # Given value x
-    # When a subsequent value y is found to have a rule that it must precede x
+    # When subsequent value y has a rule that it must precede x
     # Then the page order of the update is not correct
     for i, x in enumerate(update):
         for j, y in enumerate(update):
             if i < j and y in page_ordering_rules[x]:
                 return False
     return True
+
+
+def correct_order(
+    update: list[int], page_ordering_rules: dict[int, set[int]]
+) -> list[int]:
+    return [
+        page
+        for page, _ in sorted(
+            ((page, len(page_ordering_rules[page] & set(update))) for page in update),
+            key=lambda order: order[1],
+        )
+    ]
 
 
 def sum_middle_pages(updates: list[int]) -> int:
@@ -51,11 +63,17 @@ if __name__ == "__main__":
     correctly_ordered_updates: list[list[int]] = []
     incorrectly_ordered_updates: list[list[int]] = []
     for update in updates:
-        if is_ordered_correctly(update):
+        if is_ordered_correctly(update, page_ordering_rules):
             correctly_ordered_updates.append(update)
         else:
             incorrectly_ordered_updates.append(update)
 
-    part_1_answer: int = sum_middle_pages(correctly_ordered_updates)
+    corrected_updates: list[list[int]] = [
+        correct_order(update, page_ordering_rules)
+        for update in incorrectly_ordered_updates
+    ]
 
-    print(utility.get_answer_message(DAY, part_1=part_1_answer))
+    part_1_answer: int = sum_middle_pages(correctly_ordered_updates)
+    part_2_answer: int = sum_middle_pages(corrected_updates)
+
+    print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
