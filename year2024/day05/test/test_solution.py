@@ -58,6 +58,18 @@ def test_get_updates() -> None:
     assert solution.get_updates(UPDATES_FILE_PATH) == UPDATES
 
 
+def test_identify_correctly_ordered_updates() -> None:
+    expected: tuple[list[list[int]], list[list[int]]] = (
+        CORRECTLY_ORDERED_UPDATES,
+        INCORRECTLY_ORDERED_UPDATES,
+    )
+
+    assert (
+        solution.identify_correctly_ordered_updates(UPDATES, PAGE_ORDERING_RULES)
+        == expected
+    )
+
+
 @pytest.mark.parametrize(
     "update, expected",
     [
@@ -71,6 +83,14 @@ def test_get_updates() -> None:
 )
 def test_is_ordered_correctly(update: list[int], expected: bool) -> None:
     assert solution.is_ordered_correctly(update, PAGE_ORDERING_RULES) == expected
+
+
+def test_fix_incorrectly_ordered_updates() -> None:
+    assert sorted(
+        solution.fix_incorrectly_ordered_updates(
+            INCORRECTLY_ORDERED_UPDATES, PAGE_ORDERING_RULES
+        )
+    ) == sorted(CORRECTED_UPDATES)
 
 
 @pytest.mark.parametrize(

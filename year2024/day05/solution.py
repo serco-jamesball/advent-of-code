@@ -27,6 +27,21 @@ def get_updates(updates_file_path: str) -> list[list[int]]:
         ]
 
 
+def identify_correctly_ordered_updates(
+    updates: list[list[int]], page_ordering_rules: dict[int, set[int]]
+) -> tuple[list[list[int], tuple[list[int, int]]]]:
+    correctly_ordered_updates: list[list[int]] = []
+    incorrectly_ordered_updates: list[list[int]] = []
+
+    for update in updates:
+        if is_ordered_correctly(update, page_ordering_rules):
+            correctly_ordered_updates.append(update)
+        else:
+            incorrectly_ordered_updates.append(update)
+
+    return correctly_ordered_updates, incorrectly_ordered_updates
+
+
 def is_ordered_correctly(
     update: list[int], page_ordering_rules: dict[int, set[int]]
 ) -> bool:
@@ -38,6 +53,12 @@ def is_ordered_correctly(
             if i < j and y in page_ordering_rules[x]:
                 return False
     return True
+
+
+def fix_incorrectly_ordered_updates(
+    updates: list[list[int]], page_ordering_rules: dict[int, set[int]]
+) -> list[list[int]]:
+    return [correct_order(update, page_ordering_rules) for update in updates]
 
 
 def correct_order(
@@ -58,20 +79,17 @@ def sum_middle_pages(updates: list[int]) -> int:
 
 if __name__ == "__main__":
     updates: list[int] = get_updates(UPDATES_FILE_PATH)
-    page_ordering_rules = get_page_ordering_rules(PAGE_ORDERING_RULES_FILE_PATH)
+    page_ordering_rules: dict[int, set[int]] = get_page_ordering_rules(
+        PAGE_ORDERING_RULES_FILE_PATH
+    )
 
-    correctly_ordered_updates: list[list[int]] = []
-    incorrectly_ordered_updates: list[list[int]] = []
-    for update in updates:
-        if is_ordered_correctly(update, page_ordering_rules):
-            correctly_ordered_updates.append(update)
-        else:
-            incorrectly_ordered_updates.append(update)
+    correctly_ordered_updates, incorrectly_ordered_updates = (
+        identify_correctly_ordered_updates(updates, page_ordering_rules)
+    )
 
-    corrected_updates: list[list[int]] = [
-        correct_order(update, page_ordering_rules)
-        for update in incorrectly_ordered_updates
-    ]
+    corrected_updates: list[list[int]] = fix_incorrectly_ordered_updates(
+        updates, page_ordering_rules
+    )
 
     part_1_answer: int = sum_middle_pages(correctly_ordered_updates)
     part_2_answer: int = sum_middle_pages(corrected_updates)
