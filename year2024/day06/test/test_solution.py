@@ -1,9 +1,7 @@
-import pytest
 import year2024.day06.solution as solution
 
 
 MAP_FILE_PATH: str = r"year2024\day06\test\resource\map.txt"
-
 
 MAP: list[str] = [
     "....#.....",

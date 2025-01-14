@@ -1,5 +1,4 @@
 import year2024.utility as utility
-from collections import namedtuple
 
 
 DAY: str = "6"
