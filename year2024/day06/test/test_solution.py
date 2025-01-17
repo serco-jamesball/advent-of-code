@@ -141,11 +141,11 @@ def test_patrol() -> None:
 
 
 @pytest.mark.parametrize(
-    "step, expected",
-    [(step, step in LOOPING_OBSTACLES) for step in STEPS],
+    "position, expected",
+    [(position, position in LOOPING_OBSTACLES) for position, _ in STEPS],
 )
-def test_is_looping(step: Position, expected: bool) -> None:
-    assert solution.is_looping(MAP, GUARD, OBSTACLES | frozenset({step})) == expected
+def test_is_looping(position: Position, expected: bool) -> None:
+    assert solution.is_looping(MAP, GUARD, OBSTACLES | frozenset({position})) == expected
 
 
 def test_get_part_1_answer() -> None:
