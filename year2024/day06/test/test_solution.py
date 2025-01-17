@@ -1,9 +1,11 @@
+import pytest
 import year2024.day06.solution as solution
+from year2024.day06.solution import Map, Position, Positions, Steps
 
 
 MAP_FILE_PATH: str = r"year2024\day06\test\resource\map.txt"
 
-MAP: list[str] = [
+MAP: Map = [
     "....#.....",
     ".........#",
     "..........",
@@ -16,9 +18,9 @@ MAP: list[str] = [
     "......#...",
 ]
 
-GUARD: tuple[int, int] = (6, 4)
+GUARD: Position = (6, 4)
 
-OBSTACLES: frozenset[tuple[int, int]] = frozenset(
+OBSTACLES: Positions = frozenset(
     {
         (0, 4),
         (1, 9),
@@ -38,11 +40,11 @@ OBSTACLES: frozenset[tuple[int, int]] = frozenset(
 # 3 ..#.|...|.
 # 4 ..+-+-+#|.
 # 5 ..|.|.|.|.
-# 6 .#--^+-+.
+# 6 .#+-^-+-+.
 # 7 .+----++#.
 # 8 #+----+|..
 # 9 ......#|..
-VISITED: set[tuple[tuple[int, int], int]] = {
+STEPS: Steps = {
     # ^ 6
     ((6, 4), 0),
     ((5, 4), 0),
@@ -111,6 +113,17 @@ VISITED: set[tuple[tuple[int, int], int]] = {
     ((9, 7), 2),
 }
 
+LOOPING_OBSTACLES: Positions = frozenset(
+    {
+        (6, 3),
+        (7, 6),
+        (7, 7),
+        (8, 1),
+        (8, 3),
+        (9, 7),
+    }
+)
+
 PART_1_ANSWER: int = 41
 PART_2_ANSWER: int = 6
 
@@ -119,17 +132,25 @@ def test_get_map() -> None:
     assert solution.get_map(MAP_FILE_PATH) == MAP
 
 
-def test_find_guard() -> None:
-    assert solution.find_guard(MAP) == GUARD
-
-
-def test_find_obstacles() -> None:
-    assert solution.find_obstacles(MAP) == OBSTACLES
+def test_parse_map() -> None:
+    assert solution.parse_map(MAP) == (GUARD, OBSTACLES)
 
 
 def test_patrol() -> None:
-    assert solution.patrol(MAP, GUARD, OBSTACLES) == VISITED
+    assert solution.patrol(MAP, GUARD, OBSTACLES) == STEPS
+
+
+@pytest.mark.parametrize(
+    "step, expected",
+    [(step, step in LOOPING_OBSTACLES) for step in STEPS],
+)
+def test_is_looping(step: Position, expected: bool) -> None:
+    assert solution.is_looping(MAP, GUARD, OBSTACLES | frozenset({step})) == expected
 
 
 def test_get_part_1_answer() -> None:
-    assert solution.get_part_1_answer(VISITED) == PART_1_ANSWER
+    assert solution.get_part_1_answer(STEPS) == PART_1_ANSWER
+
+
+def test_get_part_2_answer() -> None:
+    assert solution.get_part_2_answer(MAP, GUARD, OBSTACLES, STEPS) == PART_2_ANSWER
