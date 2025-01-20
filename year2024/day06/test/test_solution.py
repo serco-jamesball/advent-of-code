@@ -145,7 +145,9 @@ def test_patrol() -> None:
     [(position, position in LOOPING_OBSTACLES) for position, _ in STEPS],
 )
 def test_is_looping(position: Position, expected: bool) -> None:
-    assert solution.is_looping(MAP, GUARD, OBSTACLES | frozenset({position})) == expected
+    assert (
+        solution.is_looping(MAP, GUARD, OBSTACLES | frozenset({position})) == expected
+    )
 
 
 def test_get_part_1_answer() -> None:

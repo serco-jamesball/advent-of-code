@@ -3,7 +3,8 @@ import day02.solution as day02
 import day03.solution as day03
 import day04.solution as day04
 import day05.solution as day05
-import day05.solution as day06
+import day06.solution as day06
+import day07.solution as day07
 
 
 def main() -> None:
@@ -12,6 +13,7 @@ def main() -> None:
     day03.main()
     day04.main()
     day05.main()
+    day06.main()
     day06.main()
 
 
