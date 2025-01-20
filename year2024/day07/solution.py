@@ -6,7 +6,6 @@ from collections.abc import Callable, Iterator
 
 Equation = tuple[int, tuple[int, ...]]
 
-Operation = str
 Operator = Callable[[int, int], int]
 
 
@@ -14,10 +13,10 @@ DAY: str = "7"
 
 EQUATIONS_FILE_PATH: str = r"year2024\day07\resource\equations.txt"
 
-OPERATIONS: frozenset[tuple[Operation, Operator]] = frozenset(
+OPERATIONS: frozenset[Operator] = frozenset(
     {
-        ("+", operator.add),
-        ("*", operator.mul),
+        operator.add,
+        operator.mul,
     }
 )
 
@@ -40,7 +39,7 @@ def reproduce_test_value(equation: Equation) -> int | None:
     answer, numbers = equation
 
     combinations: Iterator[tuple[Operator, ...]] = itertools.product(
-        (operation for _, operation in OPERATIONS), repeat=len(numbers) - 1
+        OPERATIONS, repeat=len(numbers) - 1
     )
 
     for operations in combinations:
