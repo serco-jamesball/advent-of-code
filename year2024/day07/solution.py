@@ -1,7 +1,9 @@
-import itertools
-import operator
 import year2024.utility as utility
-from collections.abc import Callable, Iterator
+from collections.abc import Callable
+from operator import add, mul
+
+
+cat: Callable[[str, str], str] = lambda x, y: int(str(x) + str(y))
 
 
 Equation = tuple[int, tuple[int, ...]]
@@ -28,31 +30,17 @@ def get_equations(equations_file_path: str) -> frozenset[Equation]:
         )
 
 
-def reproduce_test_value(equation: Equation, operations: list[str]) -> int | None:
+def reproduce_test_value(equation: Equation, operations: list[Operation]) -> int | None:
     answer, numbers = equation
 
-    combinations: Iterator[tuple[Operation, ...]] = itertools.product(
-        (getattr(operator, operation) for operation in operations),
-        repeat=len(numbers) - 1,
-    )
+    products: frozenset[int] = frozenset({numbers[0]})
+    for y in numbers[1:]:
+        products = frozenset(
+            operation(x, y) for x in products for operation in operations
+        )
 
-    for combination in combinations:
-        product: int = 0
-
-        for i in range(len(numbers)):
-            if i + 1 == len(numbers):
-                if product == answer:
-                    return product
-            else:
-                x: int | str = numbers[i] if i == 0 else product
-                y: int | str = numbers[i + 1]
-
-                operation: Operation = combination[i]
-
-                if operation is operator.concat:
-                    x, y = str(x), str(y)
-
-                product = int(operation(x, y))
+    if answer in products:
+        return answer
 
 
 def get_answer(equations: frozenset[Equation], operations: list[str]) -> int:
@@ -68,7 +56,7 @@ def get_answer(equations: frozenset[Equation], operations: list[str]) -> int:
 if __name__ == "__main__":
     equations: frozenset[Equation] = get_equations(EQUATIONS_FILE_PATH)
 
-    part_1_answer: int = get_answer(equations, ["add", "mul"])
-    part_2_answer: int = get_answer(equations, ["add", "concat", "mul"])
+    part_1_answer: int = get_answer(equations, [add, mul])
+    part_2_answer: int = get_answer(equations, [add, cat, mul])
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))

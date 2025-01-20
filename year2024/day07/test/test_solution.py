@@ -1,6 +1,6 @@
 import pytest
 import year2024.day07.solution as solution
-from year2024.day07.solution import Equation
+from year2024.day07.solution import Equation, add, cat, mul
 
 
 EQUATIONS_FILE_PATH: str = r"year2024\day07\test\resource\equations.txt"
@@ -38,8 +38,8 @@ PART_2_REPRODUCABLE_EQUATIONS: frozenset[Equation] = frozenset(
     }
 )
 
-PART_1_OPERATIONS: str = ["add", "mul"]
-PART_2_OPERATIONS: str = ["add", "concat", "mul"]
+PART_1_OPERATIONS: str = [add, mul]
+PART_2_OPERATIONS: str = [add, cat, mul]
 
 PART_1_ANSWER: int = 3749
 PART_2_ANSWER: int = 11387
