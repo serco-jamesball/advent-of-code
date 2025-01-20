@@ -6,19 +6,12 @@ from collections.abc import Callable, Iterator
 
 Equation = tuple[int, tuple[int, ...]]
 
-Operator = Callable[[int, int], int]
+Operation = Callable[[int | str, int | str], int | str]
 
 
 DAY: str = "7"
 
 EQUATIONS_FILE_PATH: str = r"year2024\day07\resource\equations.txt"
-
-OPERATIONS: frozenset[Operator] = frozenset(
-    {
-        operator.add,
-        operator.mul,
-    }
-)
 
 
 def get_equations(equations_file_path: str) -> frozenset[Equation]:
@@ -35,14 +28,15 @@ def get_equations(equations_file_path: str) -> frozenset[Equation]:
         )
 
 
-def reproduce_test_value(equation: Equation) -> int | None:
+def reproduce_test_value(equation: Equation, operations: list[str]) -> int | None:
     answer, numbers = equation
 
-    combinations: Iterator[tuple[Operator, ...]] = itertools.product(
-        OPERATIONS, repeat=len(numbers) - 1
+    combinations: Iterator[tuple[Operation, ...]] = itertools.product(
+        (getattr(operator, operation) for operation in operations),
+        repeat=len(numbers) - 1,
     )
 
-    for operations in combinations:
+    for combination in combinations:
         product: int = 0
 
         for i in range(len(numbers)):
@@ -50,19 +44,31 @@ def reproduce_test_value(equation: Equation) -> int | None:
                 if product == answer:
                     return product
             else:
-                x: int = numbers[i] if i == 0 else product
-                y: int = numbers[i + 1]
+                x: int | str = numbers[i] if i == 0 else product
+                y: int | str = numbers[i + 1]
 
-                product = operations[i](x, y)
+                operation: Operation = combination[i]
+
+                if operation is operator.concat:
+                    x, y = str(x), str(y)
+
+                product = int(operation(x, y))
 
 
-def get_part_1_answer(equations: frozenset[Equation]) -> int:
-    return sum(filter(None, map(reproduce_test_value, equations)))
+def get_answer(equations: frozenset[Equation], operations: list[str]) -> int:
+    return sum(
+        test_value
+        for test_value in (
+            reproduce_test_value(equation, operations) for equation in equations
+        )
+        if test_value is not None
+    )
 
 
 if __name__ == "__main__":
     equations: frozenset[Equation] = get_equations(EQUATIONS_FILE_PATH)
 
-    part_1_answer: int = get_part_1_answer(equations)
+    part_1_answer: int = get_answer(equations, ["add", "mul"])
+    part_2_answer: int = get_answer(equations, ["add", "concat", "mul"])
 
-    print(utility.get_answer_message(DAY, part_1=part_1_answer))
+    print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
