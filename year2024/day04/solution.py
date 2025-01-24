@@ -153,7 +153,7 @@ def find_occurrence_of_letter_along_vector(
         return next_row, next_col
 
 
-if __name__ == "__main__":
+def main() -> None:
     with open(WORD_SEARCH_FILE_PATH) as word_search_file:
         word_search: str = word_search_file.read().strip()
 
@@ -163,3 +163,7 @@ if __name__ == "__main__":
     part_2_answer: int = len(find_occurrences_of_x_mas(grid))
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
+
+
+if __name__ == "__main__":
+    main()

@@ -53,10 +53,14 @@ def get_answer(equations: frozenset[Equation], operations: list[str]) -> int:
     )
 
 
-if __name__ == "__main__":
+def main() -> None:
     equations: frozenset[Equation] = get_equations(EQUATIONS_FILE_PATH)
 
     part_1_answer: int = get_answer(equations, [add, mul])
     part_2_answer: int = get_answer(equations, [add, cat, mul])
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
+
+
+if __name__ == "__main__":
+    main()

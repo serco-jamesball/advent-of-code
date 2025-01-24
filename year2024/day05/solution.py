@@ -77,7 +77,7 @@ def sum_middle_pages(updates: list[int]) -> int:
     return sum(update[len(update) // 2] for update in updates)
 
 
-if __name__ == "__main__":
+def main() -> None:
     updates: list[int] = get_updates(UPDATES_FILE_PATH)
     page_ordering_rules: dict[int, set[int]] = get_page_ordering_rules(
         PAGE_ORDERING_RULES_FILE_PATH
@@ -95,3 +95,7 @@ if __name__ == "__main__":
     part_2_answer: int = sum_middle_pages(corrected_updates)
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
+
+
+if __name__ == "__main__":
+    main()

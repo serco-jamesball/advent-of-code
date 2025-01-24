@@ -105,7 +105,7 @@ def get_part_2_answer(
     )
 
 
-if __name__ == "__main__":
+def main() -> None:
     map: Map = get_map(MAP_FILE_PATH)
 
     guard, obstacles = parse_map(map)
@@ -116,3 +116,7 @@ if __name__ == "__main__":
     part_2_answer: int = get_part_2_answer(map, guard, obstacles, steps)
 
     print(utility.get_answer_message(DAY, part_1=part_1_answer, part_2=part_2_answer))
+
+
+if __name__ == "__main__":
+    main()
