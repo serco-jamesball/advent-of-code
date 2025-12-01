@@ -1,4 +1,3 @@
-rotation
 R6
 R18
 L39
