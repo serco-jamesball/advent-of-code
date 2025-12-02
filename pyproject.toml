@@ -1,0 +1,30 @@
+[project]
+name = "adventofcode"
+version = "2025.1"
+authors = [
+    { names = "James Ball", email = "james.ball1@serco.com" },
+]
+requires-python = ">= 3.14"
+dependencies = [
+    "pandas",
+]
+
+[tool.pytest.ini_options]
+pythonpath = "/"
+testpaths = [
+    "year2024/test",
+    "year2024/*/test",
+    "year2025/test",
+]
+addopts = "--maxfail=1 --cov year2024/ --cov year2025/ --cov-report term:skip-covered --cov-report html:coverage.html --cov-report xml:coverage.xml"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]

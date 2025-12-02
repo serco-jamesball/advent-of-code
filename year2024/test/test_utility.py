@@ -32,7 +32,7 @@ def test_get_column_labels(file_path: Path, expected: list[int]) -> None:
         (
             1,
             {"part_1": 1, "part_2": 2},
-            ("day 1: part 1: answer: 1\n" "day 1: part 2: answer: 2"),
+            ("day 1: part 1: answer: 1\nday 1: part 2: answer: 2"),
         ),
     ],
 )

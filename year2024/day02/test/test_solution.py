@@ -143,7 +143,6 @@ def test_is_safe(report: DataFrame, expected: int) -> None:
     "is_problem_dampener_enabled, expected", [(False, 2), (True, 4)]
 )
 def test_get_answer(is_problem_dampener_enabled: bool, expected: int) -> None:
-
     assert (
         solution.find_total_safe_reports(REPORTS, is_problem_dampener_enabled)
         == expected
