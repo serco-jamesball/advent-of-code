@@ -52,10 +52,24 @@ class TestGetNewPosition:
 
         assert actual == expected
 
+    def test_when_rotated_r25_and_any_click(self) -> None:
+        expected: tuple[int, int] = (75, 0)
+
+        actual: tuple[int, int] = get_new_position(self.position, "R25", any_click=True)
+
+        assert actual == expected
+
     def test_when_rotated_l25(self) -> None:
         expected: tuple[int, int] = (25, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "L25")
+
+        assert actual == expected
+
+    def test_when_rotated_l25_and_any_click(self) -> None:
+        expected: tuple[int, int] = (25, 0)
+
+        actual: tuple[int, int] = get_new_position(self.position, "L25", any_click=True)
 
         assert actual == expected
 
@@ -66,6 +80,13 @@ class TestGetNewPosition:
 
         assert actual == expected
 
+    def test_when_rotated_r50_and_any_click(self) -> None:
+        expected: tuple[int, int] = (0, 1)
+
+        actual: tuple[int, int] = get_new_position(self.position, "R50", any_click=True)
+
+        assert actual == expected
+
     def test_when_rotated_l50(self) -> None:
         expected: tuple[int, int] = (0, 1)
 
@@ -73,45 +94,138 @@ class TestGetNewPosition:
 
         assert actual == expected
 
+    def test_when_rotated_l50_and_any_click(self) -> None:
+        expected: tuple[int, int] = (0, 1)
+
+        actual: tuple[int, int] = get_new_position(self.position, "L50", any_click=True)
+
+        assert actual == expected
+
     def test_when_rotated_r100(self) -> None:
-        expected: tuple[int, int] = (50, 1)
+        expected: tuple[int, int] = (50, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "R100")
 
         assert actual == expected
 
-    def test_when_rotated_l100(self) -> None:
+    def test_when_rotated_r100_and_any_click(self) -> None:
         expected: tuple[int, int] = (50, 1)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "R100", any_click=True
+        )
+
+        assert actual == expected
+
+    def test_when_rotated_l100(self) -> None:
+        expected: tuple[int, int] = (50, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "L100")
 
         assert actual == expected
 
+    def test_when_rotated_l100_and_any_click(self) -> None:
+        expected: tuple[int, int] = (50, 1)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "L100", any_click=True
+        )
+
+        assert actual == expected
+
     def test_when_rotated_r125(self) -> None:
-        expected: tuple[int, int] = (75, 1)
+        expected: tuple[int, int] = (75, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "R125")
 
         assert actual == expected
 
+    def test_when_rotated_r125_and_any_click(self) -> None:
+        expected: tuple[int, int] = (75, 1)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "R125", any_click=True
+        )
+
+        assert actual == expected
+
     def test_when_rotated_l125(self) -> None:
-        expected: tuple[int, int] = (25, 1)
+        expected: tuple[int, int] = (25, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "L125")
 
         assert actual == expected
 
+    def test_when_rotated_l125_any_click(self) -> None:
+        expected: tuple[int, int] = (25, 1)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "L125", any_click=True
+        )
+
+        assert actual == expected
+
+    def test_when_rotated_r150(self) -> None:
+        expected: tuple[int, int] = (0, 1)
+
+        actual: tuple[int, int] = get_new_position(self.position, "R150")
+
+        assert actual == expected
+
+    def test_when_rotated_r150_and_any_click(self) -> None:
+        expected: tuple[int, int] = (0, 2)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "R150", any_click=True
+        )
+
+        assert actual == expected
+
+    def test_when_rotated_l150(self) -> None:
+        expected: tuple[int, int] = (0, 1)
+
+        actual: tuple[int, int] = get_new_position(self.position, "L150")
+
+        assert actual == expected
+
+    def test_when_rotated_l150_any_click(self) -> None:
+        expected: tuple[int, int] = (0, 2)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "L150", any_click=True
+        )
+
+        assert actual == expected
+
     def test_when_rotated_r1000(self) -> None:
-        expected: tuple[int, int] = (50, 10)
+        expected: tuple[int, int] = (50, 0)
 
         actual: tuple[int, int] = get_new_position(self.position, "R1000")
 
         assert actual == expected
 
-    def test_when_rotated_l1000(self) -> None:
+    def test_when_rotated_r1000_and_any_click(self) -> None:
         expected: tuple[int, int] = (50, 10)
 
+        actual: tuple[int, int] = get_new_position(
+            self.position, "R1000", any_click=True
+        )
+
+        assert actual == expected
+
+    def test_when_rotated_l1000(self) -> None:
+        expected: tuple[int, int] = (50, 0)
+
         actual: tuple[int, int] = get_new_position(self.position, "L1000")
+
+        assert actual == expected
+
+    def test_when_rotated_l1000_and_any_click(self) -> None:
+        expected: tuple[int, int] = (50, 10)
+
+        actual: tuple[int, int] = get_new_position(
+            self.position, "L1000", any_click=True
+        )
 
         assert actual == expected
 
@@ -122,10 +236,24 @@ class TestGetNewPosition:
 
         assert actual == expected
 
+    def test_when_rotated_r5_from_0_and_any_click(self) -> None:
+        expected: tuple[int, int] = (5, 0)
+
+        actual: tuple[int, int] = get_new_position(0, "R5", any_click=True)
+
+        assert actual == expected
+
     def test_when_rotated_l5_from_0(self) -> None:
         expected: tuple[int, int] = (95, 0)
 
         actual: tuple[int, int] = get_new_position(0, "L5")
+
+        assert actual == expected
+
+    def test_when_rotated_l5_from_0_and_any_click(self) -> None:
+        expected: tuple[int, int] = (95, 0)
+
+        actual: tuple[int, int] = get_new_position(0, "L5", any_click=True)
 
         assert actual == expected
 
