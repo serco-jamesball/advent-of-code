@@ -6,8 +6,7 @@ from pytest import MonkeyPatch
 from year2025.day01 import (
     get_new_position,
     parse_input,
-    solve_puzzle_1,
-    solve_puzzle_2,
+    solve,
 )
 
 RESOURCE_ANCHOR: str = "year2025.test.resources"
@@ -258,19 +257,31 @@ class TestGetNewPosition:
         assert actual == expected
 
 
-class TestSolvePuzzle1:
-    def test_solve_puzzle_1(self, mock_input: None) -> None:
+class TestSolve:
+    def test_puzzle_1_when_test_input(self, mock_input: None) -> None:
         expected: int = 3
 
-        actual: int = solve_puzzle_1()
+        actual: int = solve()
 
         assert actual == expected
 
+    def test_puzzle_1_when_real_input(self) -> None:
+        expected: int = 1180
 
-class TestSolvePuzzle2:
-    def test_solve_puzzle_2(self, mock_input: None) -> None:
+        actual: int = solve()
+
+        assert actual == expected
+
+    def test_puzzle_2_when_test_input(self, mock_input: None) -> None:
         expected: int = 6
 
-        actual: int = solve_puzzle_2()
+        actual: int = solve(any_click=True)
+
+        assert actual == expected
+
+    def test_puzzle_2_when_real_input(self) -> None:
+        expected: int = 6892
+
+        actual: int = solve(any_click=True)
 
         assert actual == expected

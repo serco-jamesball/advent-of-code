@@ -21,17 +21,19 @@ def get_new_position(
 
     # count any click that causes the dial to point at 0 during a full rotation
     points_at_0: int = (distance // 100) if any_click else 0
-    distance %= 100
+    distance_excluding_full_rotations: int = distance % 100
 
-    end: int = (start + distance if direction == "R" else start - distance) % 100
+    if direction == "R":
+        end: int = (start + distance_excluding_full_rotations) % 100
+        crosses_zero: bool = (start + distance_excluding_full_rotations) > 99
+    else:
+        end: int = (start - distance_excluding_full_rotations) % 100
+        crosses_zero: bool = (start - distance_excluding_full_rotations) < 0
 
     # count click that causes the dial to point at 0 during a partial
     # rotation not starting at 0
-    if any_click and start != 0 and end != 0:
-        if direction == "R" and start + distance > 99:
-            points_at_0 += 1
-        elif start - distance < 0:
-            points_at_0 += 1
+    if any_click and start != 0 and end != 0 and crosses_zero:
+        points_at_0 += 1
 
     # count click that causes the final to point at 0 at the end of a rotation
     if end == 0:
@@ -45,8 +47,9 @@ def solve(any_click: bool = False) -> int:
     total_points_at_0: int = 0
 
     for rotation in parse_input():
-        end, points_at_0 = get_new_position(position, rotation, any_click=any_click)
-        position = end
+        position, points_at_0 = get_new_position(
+            position, rotation, any_click=any_click
+        )
         total_points_at_0 += points_at_0
 
     return total_points_at_0
